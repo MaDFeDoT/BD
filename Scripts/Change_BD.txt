@@ -1,14 +1,24 @@
 connect ‘locallhost:C:\DataBase\bank.fdb’ user 'SYSDBA' password 'masterkey';
 alter table items drop start_date;
 alter table items drop end_date;
+create table type_of_acsess
+(
+    acsess_type integer primary key,
+    type_a varchar(50)
+);
 create table history_cell
 (
     ID integer not null primary key,
     cell_number integer references cells(cell_number),
-    acsess_type integer check(acsess_type<3),
+    acsess_type integer references type_of_acsess(acsess_type),
     date_acsess date,
     item_ID integer references items(item_ID)
 );
+create table acsess_rule
+(
+    rule_acsess integer primary key,
+    type_r varchar(50)
+);
 alter table contracts
-    add rule_acsess integer check(rule_acsess<2)
+    add rule_acsess integer references acsess_rule(rule_acsess);
 commit;
